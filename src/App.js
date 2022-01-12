@@ -1,22 +1,38 @@
-import logo from './logo.svg';
+import React, {useState, useEffect, useRef} from 'react';
 import './App.css';
 
+const useHandleInput = () => {
+  const inputRef = useRef()
+
+  const handleInputChange = e => {
+    inputRef.current.value = e.target.value
+  }
+
+  return [inputRef, handleInputChange]
+}
+
 function App() {
+  const [nameRef, handleNameChange] = useHandleInput()
+  const [ageRef, handleAgeInput] = useHandleInput()
+  
+  useEffect(() => {
+    //every re-render this useEffect will run 
+    console.log('%c re-render', 'color:red')
+  })
+  
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+       <form onSubmit={e => e.preventDefault()}>
+       <input placeholder='name' ref={nameRef} 
+              onChange={handleNameChange} />
+        <br/>
+        <input placeholder='age' ref={ageRef} 
+              onChange={handleAgeInput} />
+       
+       <div>Name : {nameRef.current.value}</div>
+       <button type='submit'>Submit</button>
+       </form>
       </header>
     </div>
   );
